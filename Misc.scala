@@ -9,7 +9,7 @@ def insert2tree(x : Int, t : btree[Int]) : btree[Int] = {
         case (x, Node(v, left, right)) => {
             if(v > x) Node(v, insert2tree(x, left), right)
             else if(v < x) Node(v, left, insert2tree(x,right))
-            else throw new Exception("Element exsist!")
+            else throw new Exception("Element exists!")
         }
     }
 }
