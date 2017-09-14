@@ -19,7 +19,7 @@ object Main {
     }
 
     var i = 3
-    whilst(i > 0){
+    whilst(i > 0) {
       println("This is my while loop, i = %d".format(i))
       i = i - 1
     }
@@ -29,13 +29,13 @@ object Main {
   def loopN(n: Int)(codeBlock: => Unit): Unit = {
     if (n > 0) {
       codeBlock
-      loopN(n-1)(codeBlock)
+      loopN(n - 1)(codeBlock)
     }
   }
 
   /* Borrowed from
      https://alvinalexander.com/scala/how-to-create-control-structures-dsls-in-scala-cookbook
-  */
+   */
   @tailrec
   def whilst(testCondition: => Boolean)(codeBlock: => Unit) {
     if (testCondition) {
