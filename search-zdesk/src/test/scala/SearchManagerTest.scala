@@ -58,9 +58,59 @@ class SearchManagerTest extends FunSuite with BeforeAndAfter {
     assert(thrown.getMessage === "Invalid collection 'blah' detected !!")
   }
 
-  test("isMatching('#null#',1,true) returns false") {
-    assert(isMatching(EmptySearchKey, 1, true) == false)
+  test("empty search key == empty field or empty List") {
+    assert(isMatching(EmptySearchKey, None, false))
+    assert(isMatching(EmptySearchKey, Nil, false))
   }
 
+  test("empty search key != non-empty Int/Option(Int) field") {
+    assert(!isMatching(EmptySearchKey, 1, false))
+    assert(!isMatching(EmptySearchKey, Some(1), false))
+  }
+
+  test("empty search key != non-empty Boolean/Option(Boolean) field") {
+    assert(!isMatching(EmptySearchKey, true, false))
+    assert(!isMatching(EmptySearchKey, Some(true), false))
+  }
+
+  test("empty search key != non-empty String/Option(String) field") {
+    assert(!isMatching(EmptySearchKey, "Alice", false))
+    assert(!isMatching(EmptySearchKey, Some("Alice"), false))
+  }
+
+  test("empty search key != non-empty List[String]/Option(List[String]) field") {
+    assert(!isMatching(EmptySearchKey, List("Alice"), false))
+    assert(!isMatching(EmptySearchKey, Some(List("Alice")), false))
+  }
+
+  test("search key matches Int/Option(Int) field value") {
+    assert(isMatching("1", 1, false))
+    assert(isMatching("1", Some(1), false))
+  }
+
+  test("search key matches Boolean/Option(Boolean) field value") {
+    assert(isMatching("true", true, false))
+    assert(isMatching("true", Some(true), false))
+  }
+
+  test("case-sensitive match with String/Option(String) field fails") {
+    assert(!isMatching("alice", "Alice", false))
+    assert(!isMatching("alice", Some("Alice"), false))
+  }
+
+  test("case-insensitive match with String/Option(String) field succeeds") {
+    assert(isMatching("alice", "Alice", true))
+    assert(isMatching("alice", Some("Alice"), true))
+  }
+
+  test("case-sensitive match with List[String]/Option(List[String]) field fails") {
+    assert(!isMatching("alice", List("Alice"), false))
+    assert(!isMatching("alice", Some(List("Alice")), false))
+  }
+
+  test("case-insensitive match with List[String]/Option(List[String]) field succeeds") {
+    assert(isMatching("alice", List("Alice"), true))
+    assert(isMatching("alice", Some(List("Alice")), true))
+  }
 
 }
